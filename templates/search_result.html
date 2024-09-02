@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Results</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Railway Booking</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+      <h2>Search Results</h2>
+      <p>Showing results for:</p>
+      <ul>
+        <li><strong>Start Journey:</strong> {{ start_journey }}</li>
+        <li><strong>End Journey:</strong> {{ end_journey }}</li>
+        <li><strong>Journey Date:</strong> {{ journey_date }}</li>
+      </ul>
+
+      {% if trains %}
+      <h3>Available Trains:</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Train No</th>
+            <th>Train Name</th>
+            <th>Start Journey</th>
+            <th>End Journey</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Price</th>
+            <th>Available Seats</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for train in trains %}
+          <tr>
+            <td>{{ train.Train_no }}</td>
+            <td>{{ train.Train_name }}</td>
+            <td>{{ train.start_journey.station_name }}</td>
+            <td>{{ train.end_journey.station_name }}</td>
+            <td>{{ train.start_time }}</td>
+            <td>{{ train.end_time }}</td>
+            <td>{{ train.price }}</td>
+            <td>
+              {{ availability.get(train.Train_no).Total_no_of_seats if
+              availability.get(train.Train_no) else 'N/A' }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No trains found for the selected route and date.</p>
+      {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
